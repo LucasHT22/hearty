@@ -93,7 +93,6 @@ function drawScene(ctx, W, H, params, seed, hotspot) {
     const { shape, count, sizeLevel, rotLevel, opacityLevel, fillRatio, dirIndex, paletteIndex, darkBg, densityStrength, densitySpread, spikes } = params;
     
     const palettes = shape === "star" ? STAR_PALETTES : HEART_PALETTES;
-    const safeIdx = Math.min(paletteIndex, palettes.length - 1);
     
     const rand = seededRand(seed);
 
@@ -102,7 +101,7 @@ function drawScene(ctx, W, H, params, seed, hotspot) {
     const minAlpha = 0.08 + opacityLevel * 0.04;
     const fillProb = fillRatio / 10;
     const dir = DIRS[dirIndex];
-    const pal = palettes[paletteIndex].cols;
+    const pal = palettes[Math.min(paletteIndex, palettes.length - 1)].cols;
     const markerCol = pal[0];
 
     ctx.clearRect(0, 0, W, H);
