@@ -166,12 +166,12 @@ function drawScene(ctx, W, H, params, seed, hotspot) {
     }
 }
 
-function Slider({ label, id, min, max, value, step = 1, format, onChange }) {
+function Slider({ label, id, min, max, value, step = 1, format, onChange, disabled }) {
     return (
         <div style={styles.ctrl}>
             <label style={styles.label} htmlFor={id}>{label}</label>
             <div style={styles.ctrlRow}>
-                <input id={id} type="range" min={min} max={max} step={step} value={value} onChange={e => onChange(Number(e.target.value))} style={styles.slider} />
+                <input id={id} type="range" min={min} max={max} step={step} value={value} onChange={e => onChange(Number(e.target.value))} disabled={disabled} style={{ ...styles.slider, opacity: disabled ? 0.4 : 1 }} />
                 <span style={styles.sliderVal}>{format ? format(value) : value}</span>
             </div>
         </div>
@@ -254,8 +254,8 @@ export default function Hearty() {
                     {hotspot && <button style={styles.clearBtn} onClick={clearHotspot}>clear</button>}
                 </div>
 
-                <Slider label="pull strength" id="ds" min={0} max={10} value={params.densityStrength} onChange={set("densityStrength")} />
-                <Slider label="spread" id="dp" min={1} max={10} value={params.densitySpread} onChange={set("densitySpread")} format={v => ["xs","xs","s","s","m","m","l","l","xl","xl","xl"][v]} />
+                <Slider disabled={!hotspot} label="pull strength" id="ds" min={0} max={10} value={params.densityStrength} onChange={set("densityStrength")} />
+                <Slider disabled={!hotspot} label="spread" id="dp" min={1} max={10} value={params.densitySpread} onChange={set("densitySpread")} format={v => ["xs","xs","s","s","m","m","l","l","xl","xl","xl"][v]} />
 
                 <div style={{ ...styles.ctrl, gridColumn: "1 / -1"}}>
                     <label style={styles.label}>palette</label>
