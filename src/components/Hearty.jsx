@@ -56,7 +56,11 @@ function starPoints(cx, cy, scale, angle, spikes) {
     return pts;
 }
 
-function getPoints(shape, cx, cy, scale, angle, spikes) {
+function getPoints(shape, cx, cy, scale, angle, spikes, rand, mixRatio) {
+    if (shape === "both") {
+        const actualShape = rand() < mixRatio / 10 ? "star" : "heart";
+        return actualShape === "star" ? starPoints(cx, cy, scale, angle, spikes) : heartPoints(cx, cy, scale, angle);
+    }
     return shape === "star" ? starPoints(cx, cy, scale, angle, spikes) : heartPoints(cx, cy, scale, angle);
 }
 
@@ -71,7 +75,7 @@ function densityWeight(cx, cy, hx, hy, spread, W, H) {
 }
 
 function drawMarker(ctx, x, y, col, shape, spikes) {
-    const pts = getPoints(shape, x, y, 0.5, 0, spikes);
+    const pts = getPoints(shape, x, y, 0.5, 0, spikes, () => 0.5, 5);
     ctx.beginPath();
     ctx.moveTo(pts[0][0], pts[0][1]);
     for (let j = 1; j < pts.length; j++) ctx.lineTo(pts[j][0], pts[j][1]);
@@ -90,9 +94,9 @@ function drawMarker(ctx, x, y, col, shape, spikes) {
 }
 
 function drawScene(ctx, W, H, params, seed, hotspot) {
-    const { shape, count, sizeLevel, rotLevel, opacityLevel, fillRatio, dirIndex, paletteIndex, darkBg, densityStrength, densitySpread, spikes } = params;
+    const { shape, count, sizeLevel, rotLevel, opacityLevel, fillRatio, dirIndex, paletteIndex, darkBg, densityStrength, densitySpread, spikes, mixRatio } = params;
     
-    const palettes = shape === "star" ? STAR_PALETTES : HEART_PALETTES;
+    const palettes = shape === "star" ? STAR_PALETTES : shape === "both" ? [...HEART_PALETTES, ...STAR_PALETTES] : HEART_PALETTES;
     
     const rand = seededRand(seed);
 
@@ -146,7 +150,7 @@ function drawScene(ctx, W, H, params, seed, hotspot) {
         const col = pal[Math.floor(rand() * pal.length)];
         const filled = rand() < fillProb;
 
-        const pts = getPoints(shape, cx, cy, scale, angle, spikes);
+        const pts = getPoints(shape, cx, cy, scale, angle, spikes, rand, mixRatio);
         ctx.beginPath();
         ctx.moveTo(pts[0][0], pts[0][1]);
         for (let j = 1; j < pts.length; j++) ctx.lineTo(pts[j][0], pts[j][1]);
@@ -184,7 +188,7 @@ export default function Hearty() {
 
     const [seed, setSeed] = useState(() => Date.now() & 0x7fffffff);
     const [hotspot, setHotspot] = useState(null);
-    const [params, setParams] = useState({ shape: "heart", count: 130, sizeLevel: 5, rotLevel: 3, opacityLevel: 6, fillRatio: 6, dirIndex: 0, paletteIndex: 0, darkBg: true, densityStrength: 6, densitySpread: 4, spikes: 5, });
+    const [params, setParams] = useState({ shape: "heart", count: 130, sizeLevel: 5, rotLevel: 3, opacityLevel: 6, fillRatio: 6, dirIndex: 0, paletteIndex: 0, darkBg: true, densityStrength: 6, densitySpread: 4, spikes: 5, mixRatio: 5 });
 
     const set = (key) => (val) => setParams(p => ({ ...p, [key]: val }));
 
@@ -226,7 +230,7 @@ export default function Hearty() {
         drawScene(ctx, W, H, params, seed, hotspot);
     };
 
-    const palettes = params.shape === "star" ? STAR_PALETTES : HEART_PALETTES;
+    const palettes = params.shape === "star" ? STAR_PALETTES : params.shape === "both" ? [...HEART_PALETTES, ...STAR_PALETTES] : HEART_PALETTES;
 
     return (
         <div style={styles.root}>
@@ -242,8 +246,12 @@ export default function Hearty() {
                 <Slider label="fill ratio" id="fill" min={0} max={10} value={params.fillRatio} onChange={set("fillRatio")} />
                 <Slider label="flow direction" id="dir" min={0} max={8} value={params.dirIndex} onChange={set("dirIndex")} format={v => DIR_LABELS[v]} />
 
-                {params.shape === "star" && (
+                {(params.shape === "star" || params.shape === "both") && (
                     <Slider label="spikes" id="spikes" min={3} max={8} value={params.spikes} onChange={set("spikes")} />
+                )}
+
+                {params.shape === "both" && (
+                    <Slider label="mix ratio" id="mix" min={0} max={10} value={params.mixRatio} onChange={set("mixRatio")} format={v => v === 0 ? "all ♥" : v === 10 ? "all ★" : `${v * 10}% ★`} />
                 )}
 
                 <div style={{ ...styles.sectionHeader, gridColumn: "1 / -1" }}>
@@ -275,6 +283,10 @@ export default function Hearty() {
                                 </svg>
                             </button>
                         ))}
+                        <button title="both" onClick={() => switchShape("both")} style={{ ...styles.swatch, width: 38, borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center", gap: 1, background: params.shape === "both" ? "#111111" : "#e8e8e8", color: params.shape === "both" ? "#ffffff" : "#555555", outline: params.shape === "both" ? "2px solid #888888" : "2px solid transparent", outlineOffset: "2px" }}>
+                            <svg viewBox="0 0 32 32" width="10" height="10"><path d="M16 27C16 27 4 19.5 4 11.5A6.5 6.5 0 0 1 16 7.8A6.5 6.5 0 0 1 28 11.5C28 19.5 16 27 16 27Z" fill="currentColor"/></svg>
+                            <svg viewBox="0 0 32 32" width="10" height="10"><path d="M16 3L19.1 12.2H28.5L21.2 17.8L23.9 27L16 21.4L8.1 27L10.8 17.8L3.5 12.2H12.9Z" fill="currentColor"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
