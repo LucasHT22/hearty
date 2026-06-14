@@ -69,17 +69,17 @@ No dependencies beyond React itself, no Tailwind, no other libraries.
 
 ## Features (Controls)
 
-`count` - number of shapes on canvas (20-300)
-`size range` - controls max shape scale
-`rotation spread` - how much shapes rotate from their base angle
-`opacity` - minimum and maximum alpha range
-`fill ratio` - fraction of shapes that are filled vs outline only
-`flow direction` - biases position distribution toward a compass direction
-`spikes` - star points from 3-8 (star / both modes)
-`mix ratio` - heart-to-star ratio in both modes
-`density map` - click canvas to cluster shapes around a hotspot
-`pull strength` - how strongly shapes are attracted to the hotspot
-`spread` - radius of the cluster around the hotspot
+ - `count` - number of shapes on canvas (20-300)
+ - `size range` - controls max shape scale
+ - `rotation spread` - how much shapes rotate from their base angle
+ - `opacity` - minimum and maximum alpha range
+ - `fill ratio` - fraction of shapes that are filled vs outline only
+ - `flow direction` - biases position distribution toward a compass direction
+ - `spikes` - star points from 3-8 (star / both modes)
+ - `mix ratio` - heart-to-star ratio in both modes
+ - `density map` - click canvas to cluster shapes around a hotspot
+ - `pull strength` - how strongly shapes are attracted to the hotspot
+ - `spread` - radius of the cluster around the hotspot
 
 ## Shape modes
 
