@@ -201,18 +201,18 @@ Exports at 95% JPEG quality, the density map marker is stripped before export so
 
 ## Glossary
 
-- Parametric Curve: Instead of writing `y = f(x)`, you describe both x and y as functions of a third variable `t` (the parameter). As `t` sweeps from 0 to 2π, the point `(x(t), y(t))` traces the shape.
-- Implicit Equation: a curve defined by a condition like `f(x, y) <= 0` rather than an explicit formula. Every point in the plane either satisfies it (inside) or doesn't (outside).
-- Trigonometric Series: a sum of sine and cosine terms. Each term is "harmonic" that adds detail to the shape. More terms = more complex curve.
-- Rotation matrix: a 2x2 matrix that rotates a point around the origin by angle θ. Multiplying any point by it spins it without stretching.
-- Scale: multiplying coordinates by a constant s. s > 1 makes the shape bigger, s < 1 makes it smaller.
-- Translation: Shifting a shape to a new position by adding `(Tx, Ty)` to every point.
-- Seed: a starting number fed into a random number generator. Same seed always produces the same sequence of "random" numbers, making compositions reproducible.
-- LCG (Linear Congruential Generator): one of the simplest random number algorithm s: `s = (s x a + c) mod m`. Fast, deterministic, and good enough for generative art.
-- Gaussian Falloff: a bell-curve-shaped weight that is 1 at the center and decays smoothly to 0 with distance. Used here to make shapes near the hotspot larger.
-- Implicit Heart: the algebraic curve `(x^2 + y^2 - 1)^3 - x^2y^3 <= 0`. Famous because it looks like a heart and fits on a single line, but it's a different curve from the parametric one used by Hearty.
-- Polar Coordinates: describing a point by its distance from the origin `r` and its angle `θ`, instaed of `(x, y)`. Stars are naturally expressed this way since the spike pattern is angular.
-- Blend / Lerp: linear interpolation between two values: `result = a x (1 - t) + b x t`. At t=0 you get `a`, at t=1 you get `b`, in between you get a mix.
+ - Parametric Curve: Instead of writing `y = f(x)`, you describe both x and y as functions of a third variable `t` (the parameter). As `t` sweeps from 0 to 2π, the point `(x(t), y(t))` traces the shape.
+ - Implicit Equation: a curve defined by a condition like `f(x, y) <= 0` rather than an explicit formula. Every point in the plane either satisfies it (inside) or doesn't (outside).
+ - Trigonometric Series: a sum of sine and cosine terms. Each term is "harmonic" that adds detail to the shape. More terms = more complex curve.
+ - Rotation matrix: a 2x2 matrix that rotates a point around the origin by angle θ. Multiplying any point by it spins it without stretching.
+ - Scale: multiplying coordinates by a constant s. s > 1 makes the shape bigger, s < 1 makes it smaller.
+ - Translation: Shifting a shape to a new position by adding `(Tx, Ty)` to every point.
+ - Seed: a starting number fed into a random number generator. Same seed always produces the same sequence of "random" numbers, making compositions reproducible.
+ - LCG (Linear Congruential Generator): one of the simplest random number algorithm s: `s = (s x a + c) mod m`. Fast, deterministic, and good enough for generative art.
+ - Gaussian Falloff: a bell-curve-shaped weight that is 1 at the center and decays smoothly to 0 with distance. Used here to make shapes near the hotspot larger.
+ - Implicit Heart: the algebraic curve `(x^2 + y^2  - 1)^3 - x^2y^3 <= 0`. Famous because it looks like a heart and fits on a single line, but it's a different curve from the parametric one used by Hearty.
+ - Polar Coordinates: describing a point by its distance from the origin `r` and its angle `θ`, instaed of `(x, y)`. Stars are naturally expressed this way since the spike pattern is angular.
+ - Blend / Lerp: linear interpolation between two values: `result = a x (1 - t) + b x t`. At t=0 you get `a`, at t=1 you get `b`, in between you get a mix.
 
 ---
 
